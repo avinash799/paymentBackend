@@ -1,23 +1,33 @@
 import amqp from "amqplib";
 
-let channel;
 let connection;
+let channel;
 
 export const connectRabbitMQ = async () => {
-  connection = await amqp.connect("amqp://localhost");
 
-  channel = await connection.createChannel();
+  try {
 
-  await channel.assertQueue("payment-processing", {
-    durable: true,
-  });
+    connection = await amqp.connect(
+      process.env.RABBITMQ_URL
+    );
 
-  console.log("RabbitMQ Connected");
+    channel = await connection.createChannel();
+
+    console.log(
+      "RabbitMQ connected"
+    );
+
+  } catch (error) {
+
+    console.log(
+      "RabbitMQ connection error:",
+      error.message
+    );
+
+    throw error;
+  }
 };
 
 export const getChannel = () => {
-  if (!channel) {
-    throw new Error("RabbitMQ channel not initialized");
-  }
   return channel;
 };
