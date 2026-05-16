@@ -1,0 +1,76 @@
+version: '3.9'
+
+services:
+
+  app:
+    build: .
+    container_name: payment-app
+
+    ports:
+      - "3000:3000"
+
+    volumes:
+      - .:/app
+      - /app/node_modules
+
+    depends_on:
+      - mongodb
+      - redis
+      - rabbitmq
+
+    environment:
+      PORT: 3000
+      MONGODB_URI: mongodb://mongodb:27017/payments
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+      RABBITMQ_URL: amqp://rabbitmq
+
+    command: npm run dev
+
+  worker:
+    build: .
+
+    container_name: payment-worker
+
+    depends_on:
+      - mongodb
+      - redis
+      - rabbitmq
+
+    volumes:
+      - .:/app
+      - /app/node_modules
+
+    environment:
+      PORT: 3000
+      MONGODB_URI: mongodb://mongodb:27017/payments
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+      RABBITMQ_URL: amqp://rabbitmq
+
+    command: npm run worker
+
+  mongodb:
+    image: mongo
+
+    container_name: payment-mongodb
+
+    ports:
+      - "27017:27017"
+
+  redis:
+    image: redis
+
+    container_name: payment-redis
+
+    ports:
+      - "6379:6379"
+
+  rabbitmq:
+    image: rabbitmq:3-management
+
+    container_name: payment-rabbitmq
+
+    ports:
+      - "5672:5672"
+      - "15672:15672"
