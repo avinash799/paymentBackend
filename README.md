@@ -59,15 +59,5 @@ npm run dev
 Production mode:
 npm start
 
-📘 API Documentation
 
-Swagger UI:
-
-http://localhost:3000/api-docs
-
-Or deployed URL:
-
-<a href="https://paymentbackend-rn7l.onrender.com/api-docs/" target="_blank">
-👉 Open Swagger API (Live)
-</a>
 
