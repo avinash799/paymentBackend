@@ -67,4 +67,4 @@ http://localhost:3000/api-docs
 
 Or deployed URL:
 
-<https://paymentbackend-rn7l.onrender.com/api-docs/>
+https://paymentbackend-rn7l.onrender.com/api-docs/
